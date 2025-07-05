@@ -2,7 +2,7 @@ require("dotenv").config();
 
 // --- 전역 지표 설정 상수 ---
 // 모든 코인에 기본적으로 적용될 시간 봉
-const defaultInterval = "15m";
+const defaultInterval = "5m";
 
 // 모든 코인에 기본적으로 적용될 지표 설정
 const defaultIndicators = [
@@ -19,6 +19,16 @@ const defaultIndicators = [
   },
 ];
 
+// alerts.json에서 모니터링할 심볼 목록(문자열 배열)을 불러옵니다.
+const alertSymbols = require("./alerts.json");
+
+// 각 심볼에 기본 설정을 적용하여 최종 알림 규칙 배열을 생성합니다.
+const alerts = alertSymbols.map((symbol) => ({
+  symbol: symbol,
+  interval: defaultInterval,
+  indicators: defaultIndicators,
+}));
+
 module.exports = {
   // BingX API 연결을 위한 키 설정
   bingx: {
@@ -28,32 +38,8 @@ module.exports = {
     secretKey: process.env.BINGX_SECRET_KEY,
   },
 
-  // 알림 규칙을 설정하는 배열. 여러 개의 알림을 등록할 수 있습니다.
-  alerts: [
-    {
-      // (필수) 알림을 받을 코인의 심볼 (BingX 기준, 예: "BTC-USDT", "ETH-USDT")
-      symbol: "BTC-USDT",
-      // 기본 시간 봉 사용
-      interval: defaultInterval,
-      // 기본 지표 설정 사용
-      indicators: defaultIndicators,
-    },
-    {
-      symbol: "XRP-USDT",
-      interval: defaultInterval,
-      indicators: defaultIndicators,
-    },
-    {
-      symbol: "ETH-USDT",
-      interval: defaultInterval,
-      indicators: defaultIndicators,
-    },
-    {
-      symbol: "SOL-USDT",
-      interval: defaultInterval,
-      indicators: defaultIndicators,
-    },
-  ],
+  // 동적으로 생성된 알림 규칙 배열
+  alerts,
 
   // 알림을 보낼 채널 설정
   notification: {
