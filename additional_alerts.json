@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "intervals": ["1h", "4h"],
+  "checkEveryMinutes": 5
+}

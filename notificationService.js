@@ -13,11 +13,7 @@ const { token, chatId } = config.notification.telegram;
  * @param {string} message - 보낼 메시지
  */
 async function sendNotification(message) {
-    // 1. 콘솔에 알림 내용을 항상 기록합니다.
-    console.log("----------------------------------------");
-    console.log(`[알림 발생] ${new Date().toLocaleString()}`);
-    console.log(message);
-    console.log("----------------------------------------");
+    // 1. 콘솔에 알림 내용을 기록하지 않습니다. (텔레그램으로만 전송)
 
     // 2. 텔레그램 설정이 유효한지 확인합니다.
     if (!token || !chatId || token === "YOUR_TELEGRAM_BOT_TOKEN" || chatId === "YOUR_TELEGRAM_CHAT_ID") {
@@ -33,7 +29,6 @@ async function sendNotification(message) {
             chat_id: chatId, // 메시지를 받을 채팅방 ID
             text: message,      // 보낼 메시지 내용
         });
-        console.log("[텔레그램 발송 성공] 메시지가 성공적으로 전송되었습니다.");
     } catch (error) {
         console.error("[텔레그램 발송 실패] 메시지 전송 중 오류가 발생했습니다.");
         // API로부터 받은 에러 응답이 있다면 상세 내용을 출력합니다.
